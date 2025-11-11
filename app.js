@@ -88,7 +88,14 @@ function wireCopy(){
 
     // Leads
     const leadNext=document.getElementById('leadNext');
-    document.querySelectorAll('[data-adddays]')?.forEach(b=>b.addEventListener('click',()=>{ if(leadNext){const n=parseInt(b.dataset.adddays,10)||0; leadNext.value=addDaysISO(n);} }));
+    document.querySelectorAll('[data-adddays]')?.forEach(b=>{
+  b.addEventListener('click', ()=>{
+    if(!leadNext) return;
+    const n = parseInt(b.dataset.adddays, 10) || 0;
+    setDateInput(leadNext, addDays(n));
+  });
+});
+
     document.getElementById('clearNext')?.addEventListener('click',()=>{ if(leadNext) leadNext.value=''; });
     document.getElementById('addLead')?.addEventListener('click',()=>{
       const name=val('leadName').trim(); if(!name) return;
@@ -252,7 +259,34 @@ function renderAll(){
 }
 
 // Helpers
-function addDaysISO(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+// --- Date helpers (iOS-safe) ---
+function toISODate(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function addDays(n){
+  // set to noon to avoid timezone rollovers
+  const d = new Date();
+  d.setHours(12,0,0,0);
+  d.setDate(d.getDate()+n);
+  return d;
+}
+function setDateInput(el, d){
+  if(!el) return;
+  try{
+    if('valueAsDate' in el && el.type==='date'){
+      el.valueAsDate = d;
+    } else {
+      el.value = toISODate(d);
+    }
+  }catch(e){
+    el.value = toISODate(d);
+  }
+}
+// Helpers
+
 
 // Master Closer Tabs
 function wireMCT(){
