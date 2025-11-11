@@ -1,0 +1,13 @@
+{
+  "name": "LegacyBuilt OS (Mobile)",
+  "short_name": "LB OS",
+  "description": "LegacyBuilt Command OS v3.2.9 — Mobile PWA with Master Closer Toolkit",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0f1014",
+  "theme_color": "#0f1014",
+  "icons": [
+    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
